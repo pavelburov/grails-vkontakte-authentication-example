@@ -1,0 +1,98 @@
+h2. Basic Configuration
+
+{note}
+Make sure that you have installed and configured spring-security-core plugin before this step.
+{note}
+
+Calling 'grails s2-init-vkontakte' will make default configuration of plugin for you, make sure that you have configuration in your @Config.groovy@ like:
+
+{code}
+grails.plugin.springsecurity.vkontakte.domain.className = '<your VkontakteUser domain>'
+grails.plugin.springsecurity.vkontakte.appId = '<Vkontakte appId>'
+grails.plugin.springsecurity.vkontakte.secret = '<Vkontakte secret>'
+{code}
+
+Or you can skip 'grails s2-init-vkontakte' step, and make such configuration by yourself.
+
+When you have valid configuration you can put Vkontakte Connect button in you GSP:
+
+{code}
+<vkontakteAuth:connect />
+{code}
+
+h2. Vkontakte configuration
+{table}
+*Name* | *Default Value*
+grails.plugin.springsecurity.vkontakte.appId | must be specified
+grails.plugin.springsecurity.vkontakte.secret | must be specified
+{table}
+
+h3. Permissions
+{table}
+*Name* | *Default Value*
+grails.plugin.springsecurity.vkontakte.permissions | []
+{table}
+
+See: [Vkontakte App permissions|http://vk.com/dev/permissions]
+
+h2. Domain configuration
+{table}
+*Name* | *Default Value*
+grails.plugin.springsecurity.vkontakte.domain.className | VkontakteUser
+grails.plugin.springsecurity.vkontakte.domain.userConnectionPropertyName | user
+grails.plugin.springsecurity.vkontakte.domain.userIdPropertyName | vkId
+{table}
+
+Where:
+
+ * @.classname@ - domain class name that will be used for authentication
+ * @.connectionPropertyName@ - name of property that connects (belongsTo) to main app user (if you have two different domains, one for app user, one for Vkontakte user)
+ * @.userIdPropertyName@ - name of property to hold Vkontakte user id
+
+h2. Authentication configuration
+
+{table}
+*Name* | *Default Value*
+grails.plugin.springsecurity.vkontakte.autoCreate.enabled | true
+grails.plugin.springsecurity.vkontakte.autoCreate.roles | ['ROLE_USER', 'ROLE_VKONTAKTE']
+{table}
+
+Where:
+ * @.autoCreate.enabled@ - plugin will automatically create corresponding user for each new visitor authentication using Vkontakte
+ * @.autoCreate.roles@ - default list of roles that will be assigned to create user
+
+h2. Filters configuration
+
+h3. Redirect
+{table}
+*Name* | *Default Value*
+grails.plugin.springsecurity.vkontakte.filters.redirect.processUrl | '/j_spring_security_vkontakte_check'
+grails.plugin.springsecurity.vkontakte.filters.redirect.position | SecurityFilterPosition.OPENID_FILTER.order + 1
+grails.plugin.springsecurity.vkontakte.filters.redirect.authenticationSuccessHandler | ''
+grails.plugin.springsecurity.vkontakte.filters.redirect.authenticationFailureHandler | ''
+grails.plugin.springsecurity.vkontakte.filters.redirect.successHandler | {}
+grails.plugin.springsecurity.vkontakte.filters.redirect.failureHandler | {}
+{table}
+
+Where:
+ * @.filters.redirect.processUrl@ - url that will be used for authentication
+ * @.filters.redirect.position@ - filter position
+ * @.filters.redirect.authenticationSuccessHandler@ - bean name to use as authentication successHandler
+ * @.filters.redirect.authenticationFailureHandler@ - bean name to use as authentication FailureHandler
+ * @.filters.redirect.successHandler@ - configuration for predefined handler
+ * @.filters.redirect.failureHandler@ - configuration for predefined handler
+
+h3. Open API
+{table}
+*Name* | *Default Value*
+grails.plugin.springsecurity.vkontakte.filters.openApi.processUrl | '/j_spring_security_vkontakte_open_api_check'
+grails.plugin.springsecurity.vkontakte.filters.openApi.position | SecurityFilterPosition.OPENID_FILTER.order + 2
+grails.plugin.springsecurity.vkontakte.filters.openApi.authenticationSuccessHandler | ''
+grails.plugin.springsecurity.vkontakte.filters.openApi.authenticationFailureHandler | ''
+{table}
+
+Where:
+ * @.filters.openApi.processUrl@ - url that will be used for authentication
+ * @.filters.openApi.position@ - filter position
+ * @.filters.openApi.authenticationSuccessHandler@ - bean name to use as authentication successHandler
+ * @.filters.openApi.authenticationFailureHandler@ - bean name to use as authentication FailureHandler

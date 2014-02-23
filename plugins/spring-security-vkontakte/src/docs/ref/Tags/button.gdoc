@@ -1,0 +1,16 @@
+h1. button
+
+h2. Purpose
+Puts Vkontakte connect button using Open API.
+
+See: [VK Open API|http://vk.com/dev/openapi]
+
+h2. Examples
+{code}
+<vkontakteAuth:button id="login_button" />
+{code}
+
+h2. Description
+Attributes
+ * @id@ (required) - button id
+ * @permissions@ (optional) - bit mask of required permissions. See: [Permissions| http://vk.com/dev/permissions]

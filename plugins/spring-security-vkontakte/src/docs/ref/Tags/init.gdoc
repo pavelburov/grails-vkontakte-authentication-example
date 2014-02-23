@@ -1,0 +1,15 @@
+h1. init
+
+h2. Purpose
+Initialize Vkontakte Open API.
+
+See: [VK Open API|http://vk.com/dev/openapi]
+
+h2. Examples
+{code}
+<vkontakteAuth:init async="${true}" />
+{code}
+
+h2. Description
+Attributes
+ * @async@ (optional) - use or not asynchronous initialization. Default: false

@@ -1,0 +1,78 @@
+h2. How it works
+
+If you want to add some specific logic to default plugin behaviour, you have to create your own
+service called 'vkontakteAuthService'. Then the plugin will check for known methods of this service, and if
+they're exist - use them instead of or in additional to own method.
+
+It's some kind of extending an abstract class, but you don't need to create all methods, just what you need.
+
+Used objects:
+
+  * @<VkontakteUser>@ - domain class for your vkontakte user. It's your own class, can have other name, it's just a example
+  * @<Person>@ - general user, used by Spring Security. It's your own class, can have other name, it's just a example
+  * @VkontakteAuthToken@ - token provided by plugin (instance of @com.burig.grails.springsecurity.vkontakte.VkontakteAuthToken@)
+
+VkontakteAuthToken contains:
+  * String code
+  * VkontakteAccessToken accessToken
+  ** Long userId
+  ** String accessToken
+  ** Date expireAt
+
+Notice that @<VkontakteUser>@ and @<Person>@ can be same object, or can be two different object (with a relation), depends
+on your architecture.
+
+h2. Take a look at sources
+
+To understand how it works, and which methods you can use for customization.
+Take a look at sources of [DefaultVkontakteAuthDao|https://github.com/pavelburov/grails-spring-security-vkontakte/blob/master/src/groovy/com/burig/grails/springsecurity/vkontakte/DefaultVkontakteAuthDao.groovy]
+
+h2. List of possible methods:
+
+h3. @<VkontakteUser>@ findUser(VkontakteAuthToken token)
+
+Called when vkontakte user is authenticated (on every request), must return existing instance
+for specified token, if exits. If doesn't - return @null@.
+
+h3. @<VkontakteUser>@ create(VkontakteAuthToken token)
+
+Called when we have a new vkontakte user, called on first login to create all required data structures.
+
+Notice, that if you have such method, it replaces all other methods for user creation, like:
+
+  * createAppUser
+  * prepopulateAppUser
+  * onCreate
+  * afterCreate
+  * createRoles
+
+h3. @<Person>@ createAppUser(@<VkontakteUser>@ user, VkontakteAuthToken token)
+
+Called if you have configured two domains, one for main user, one for vkontakte user.
+
+h3. void afterCreate(@<VkontakteUser>@ user, VkontakteAuthToken token)
+
+Called after user was created by plugin, just after saving into database, but before roles are assigned to user.
+You can setup user object with some extra values. If you need to access Vkontakte API, you could use token, it
+contains 'accessToken' for current user.
+
+h3. void createRoles(@<VkontakteUser>@ user)
+
+Called when we have a new Vkontakte user, called on first login to create roles list for new user. If method doesn't exist,
+user will be created with default roles (configured at 'grails.plugins.springsecurity.vkontakte.autoCreate.roles')
+
+h3. void updateToken(@<VkontakteUser>@ user, VkontakteAuthToken token)
+
+Called on each login, you could update user details if needed.
+
+h3. @<Person>@ getAppUser(@<VkontakteUser>@ user)
+
+Must return object to store in security context for specified vkontakte user (can return itself)
+
+h3. Object getPrincipal(@<Person>@ person)
+
+Principal to use with Spring Security. It's very useful if it will be instance of @UserDetails@ class.
+
+h3. Collection<GrantedAuthority> getRoles(@<Person>@ user)
+
+Must return roles list for specified vkontakte user

@@ -1,0 +1,21 @@
+package ${packageName}
+
+import ${userClassName}
+
+class ${classSimpleName} {
+
+    Long ${userIdPropertyName}
+    String accessToken
+    Date accessTokenExpires
+
+    String firstName
+    String lastName
+
+    static belongsTo = [${userConnectionPropertyName}: ${userClassSimpleName == classSimpleName ? userClassName : userClassSimpleName}]
+
+    static constraints = {
+        ${userIdPropertyName} unique: true
+        firstName(nullable: true)
+        lastName(nullable: true)
+   }
+}

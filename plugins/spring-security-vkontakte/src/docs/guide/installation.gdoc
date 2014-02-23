@@ -1,0 +1,28 @@
+Add dependency into @BuildConfig.groovy@:
+
+{code}
+    plugins {
+        compile "org.grails.plugins:spring-security-vkontakte:1.0"
+        // ...
+        // you need to have spring-security-core plugin installed
+        // ...
+    }
+{code}
+
+Call (optionaly) configuration wizards by:
+{code}
+grails s2-quickstart //configure Spring Security Core
+grails s2-init-vkontakte //configure Spring Security Vkontakte
+{code}
+
+Or you can edit @Config.groovy@ instead and put your Vkontakte App appId/secret and domain class configuration into @Config.groovy@:
+
+{code}
+grails.plugin.springsecurity.vkontakte.appId = ..
+grails.plugin.springsecurity.vkontakte.secret = ..
+grails.plugin.springsecurity.vkontakte.domain.className = 'com.company.VkontakteUser'
+{code}
+
+It's very basic configuration, for other options (see [Configuration|guide:configuration] section)
+
+Follow [Basic Usage|guide:usage] guide for full example.

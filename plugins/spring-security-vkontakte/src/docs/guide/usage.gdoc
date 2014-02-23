@@ -1,0 +1,62 @@
+h2. Example app
+
+You can take a look at [Example Application|https://github.com/pavelburov/grails-vkontakte-authentication-example], it's very
+basic app, that shows how to use the plugin. Just clone it, put your Vkontakte App credentials, and play with the code.
+
+h2. Usage
+
+h3. Setup Vkontakte credentials
+
+Put your Vkontakte App appId/secret into @Config.groovy@:
+{code}
+grails.plugin.springsecurity.vkontakte.appId = ..
+grails.plugin.springsecurity.vkontakte.secret = ..
+{code}
+
+h3. Create domain class for your user
+
+Like @domain/VkontakteUser.groovy@:
+
+{code}
+class VkontakteUser {
+    Long vkId
+    String accessToken
+    Date accessTokenExpires
+
+    static belongsTo = [user: User] // connected to main Spring Security domain
+
+    static constraints = {
+        vkId unique: true
+    }
+}
+{code}
+
+The plugin is configured for @VkontakteUser@ class name by default. But you could use different name (or use package) for domain class,
+for example @com.company.UserWithVkontakte@, that you should configure at @Config.groovy@ at this case:
+{code}
+grails.plugin.springsecurity.vkontakte.domain.className = 'com.company.VkontakteUser'
+{code}
+
+h3. Put SignIn with Vkontakte button:
+
+Add into your GSP:
+{code}
+<vkontakteAuth:connect />
+{code}
+
+h3. Use Spring Security
+
+Now you could use all security tools provided by [Spring Security Core|http://grails-plugins.github.io/grails-spring-security-core/docs/manual/].
+
+For example, you could use taglib for checking user state:
+{code}
+<sec:ifLoggedIn>
+    <div class="message">Authenticated</div>
+    Hello <sec:username/>!
+</sec:ifLoggedIn>
+
+<sec:ifNotLoggedIn>
+    <div class="message">Not authenticated</div>
+    <vkontakteAuth:connect />
+</sec:ifNotLoggedIn>
+{code}

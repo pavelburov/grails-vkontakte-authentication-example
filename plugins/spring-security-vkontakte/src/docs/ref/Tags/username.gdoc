@@ -1,0 +1,9 @@
+h1. username
+
+h2. Purpose
+Renders the user's "$firstName $lastName" if logged in.
+
+h2. Examples
+{code}
+<vkontakteAuth:username />
+{code}

@@ -1,0 +1,12 @@
+Grails plugin for Vkontakte Authentication, as extension to Grails Spring Security Core plugin.
+
+h2. Requirements:
+ * grails 2.0+
+ * spring-security-core plugin 2.0-RC2
+ * jquery (for Open API authorization)
+
+h2. Links:
+
+  * [Sources|https://github.com/pavelburov/grails-spring-security-vkontakte]
+  * [Example app|https://github.com/pavelburov/grails-vkontakte-authentication-example]
+  * [Submit a bug|https://github.com/pavelburov/grails-spring-security-vkontakte/issues]
